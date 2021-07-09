@@ -42,4 +42,34 @@ describe('ToReadEffects', () => {
       httpMock.expectOne('/api/reading-list').flush([]);
     });
   });
+
+  describe('markBookFinished$', () => {
+    beforeEach(() => {
+      actions = new ReplaySubject();
+      actions.next(ReadingListActions.markBookAsFinished({ bookId: 'B', finishedDate: '2021-07-09T14:07:04.417Z' }));
+    });
+
+    it('should mark a book as finished', done => {
+
+      effects.markBookFinished$.subscribe(action => {
+        expect(action).toEqual(
+          ReadingListActions.confirmedMarkBookAsFinished({ bookId: 'B', finishedDate: '2021-07-09T14:07:04.417Z' })
+        );
+        done();
+      });
+
+      httpMock.expectOne('/api/reading-list/B/finished').flush([]);
+    });
+
+    it('should not mark a book as finished when api returns error', done => {
+
+      effects.markBookFinished$.subscribe(action => {
+        expect(action.type).toEqual('[Reading List API] Failed to mark book as complete');
+        done();
+      });
+
+      httpMock.expectOne('/api/reading-list/B/finished')
+      .error(new ErrorEvent('Internal server Error'));
+    });
+  });
 });
