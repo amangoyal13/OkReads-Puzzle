@@ -67,6 +67,25 @@ describe('Reading List Reducer', () => {
 
       expect(result.ids.length).toEqual(1);
     });
+
+    it('confirmedMarkBookAsFinished action should set finished date and finish attribute in state', () => {
+      const action = ReadingListActions.confirmedMarkBookAsFinished({
+        bookId:'B', finishedDate: '2021-07-09T14:07:04.417Z' });
+
+      const result: State = reducer(state, action);
+
+      expect(result.entities['B'].finished).toEqual(true);
+      expect(result.entities['B'].finishedDate).toEqual('2021-07-09T14:07:04.417Z');
+    });
+
+    it('failedMarkBookAsFinished action should set error in state', () => {
+      const action = ReadingListActions.failedMarkBookAsFinished({
+        error: 'API Failed to update book' });
+
+      const result: State = reducer(state, action);
+
+      expect(result.error).toEqual('API Failed to update book');
+    });
   });
 
   describe('unknown action', () => {
