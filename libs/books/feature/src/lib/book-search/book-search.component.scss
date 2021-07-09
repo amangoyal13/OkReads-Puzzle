@@ -68,5 +68,25 @@ form {
   justify-content: center;
   min-height: 50vh;
   font-size: 1.5rem;
-  color: $gray40;
+  color: $gray60;
+}
+
+.default-text-color {
+  color: $gray60;
+}
+
+.search-example-button {
+  color: $pink-dark;
+  border: none;
+  background:none;
+  padding: 0;
+  &:hover {
+    cursor: pointer;
+    color: $pink-very-dark;
+  }
+}
+
+.search-error {
+  color: $red;
+  text-align: center;
 }
