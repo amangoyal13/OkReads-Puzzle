@@ -12,6 +12,7 @@
     <div>
       <button
         mat-icon-button
+        data-testing="remove-from-list-button"
         color="warn"
         [attr.aria-label]="'Remove ' + book.title + ' from reading list'"
         (click)="removeFromReadingList(book)"
