@@ -7,7 +7,7 @@ import {
 } from './reading-list.reducer';
 import { createBook, createReadingListItem } from '@tmo/shared/testing';
 
-describe('Books Reducer', () => {
+describe('Reading List Reducer', () => {
   describe('valid Books actions', () => {
     let state: State;
 
@@ -34,22 +34,38 @@ describe('Books Reducer', () => {
 
     it('failedAddToReadingList should undo book addition to the state', () => {
       const action = ReadingListActions.failedAddToReadingList({
-        book: createBook('B')
+        error: 'Add Book API Failed'
       });
 
       const result: State = reducer(state, action);
 
-      expect(result.ids).toEqual(['A']);
+      expect(result.error).toEqual('Add Book API Failed');
     });
 
     it('failedRemoveFromReadingList should undo book removal from the state', () => {
       const action = ReadingListActions.failedRemoveFromReadingList({
-        item: createReadingListItem('C')
+        error: 'Remove Book API failed'
       });
 
       const result: State = reducer(state, action);
 
-      expect(result.ids).toEqual(['A', 'B', 'C']);
+      expect(result.error).toEqual('Remove Book API failed');
+    });
+
+    it('should add book to reading list', () => {
+      const action = ReadingListActions.confirmedAddToReadingList({ book: createBook('D') });
+      
+      const result: State = reducer(state, action);
+
+      expect(result.ids.length).toEqual(3);
+    });
+
+    it('should remove book from reading list', () => {
+      const action = ReadingListActions.confirmedRemoveFromReadingList({ item: createReadingListItem('B') });
+
+      const result: State = reducer(state, action);
+
+      expect(result.ids.length).toEqual(1);
     });
   });
 
